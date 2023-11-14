@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:test3/model/product_model.dart';
-import 'package:test3/utils/mysnackmsg.dart';
+import 'package:adminpanel/model/product_model.dart';
+import 'package:adminpanel/utils/mysnackmsg.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});

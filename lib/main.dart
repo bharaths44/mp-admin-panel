@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:test3/firebase_options.dart';
-import 'package:test3/add_product.dart';
+import 'package:adminpanel/firebase_options.dart';
+import 'package:adminpanel/add_product.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.amber,
       ),
       home: const AddProduct(),
     );

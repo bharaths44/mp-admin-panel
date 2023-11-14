@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:test3/model/product_model.dart';
 import 'package:test3/utils/mysnackmsg.dart';
 
@@ -12,24 +15,28 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseStorage storage = FirebaseStorage.instance;
+
   String dbRef = 'product'; // Update the collection name to 'product'
 
   TextEditingController inputCategory = TextEditingController();
   TextEditingController inputPrice = TextEditingController();
   TextEditingController inputName = TextEditingController();
-  TextEditingController inputImageUrl = TextEditingController();
   TextEditingController inputStock = TextEditingController();
+  TextEditingController inputImageUrl = TextEditingController();
   bool loading = false;
   bool isUpdate = false;
   String docID = '';
   List<ProductModel> productList = []; // Update the type to ProductModel
 
+  File? _image;
+
   reset() {
     inputName.clear();
     inputCategory.clear();
     inputPrice.clear();
-    inputImageUrl.clear();
     inputStock.clear();
+    _image = null;
     setState(() {});
   }
 
@@ -39,9 +46,53 @@ class _AddProductState extends State<AddProduct> {
       inputName.text = product.name ?? '';
       inputCategory.text = product.category ?? '';
       inputPrice.text = product.price.toString();
-      inputImageUrl.text = product.image ?? '';
       inputStock.text = product.stock.toString();
+      // You might want to load the image as well
+      // For simplicity, I'm not loading the image here
     });
+  }
+
+  Future<void> _uploadImage() async {
+    // Pick an image from the gallery
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Convert the pickedFile to a File
+      _image = File(pickedFile.path);
+
+      // Upload the image to Firebase Storage
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('product_images/${DateTime.now().toString()}');
+      final uploadTask = storageRef.putFile(_image!);
+
+      // Wait for the upload to complete
+      await uploadTask.whenComplete(() async {
+        // Get the download URL of the uploaded image
+        final downloadURL = await storageRef.getDownloadURL();
+
+        // Update the inputImageUrl controller with the download URL
+        setState(() {
+          inputImageUrl.text = downloadURL;
+          loading = false;
+        });
+      });
+    }
+  }
+
+  Future<String?> _uploadFile(String name) async {
+    try {
+      if (_image != null) {
+        TaskSnapshot snapshot =
+            await storage.ref('images/$name').putFile(_image!);
+        return await snapshot.ref.getDownloadURL();
+      }
+      return null;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   getAllProducts() async {
@@ -63,8 +114,8 @@ class _AddProductState extends State<AddProduct> {
       showMsg(context, 'Enter category');
     } else if (inputPrice.text.trim().isEmpty) {
       showMsg(context, 'Enter price');
-    } else if (inputImageUrl.text.trim().isEmpty) {
-      showMsg(context, 'Enter image URL');
+    } else if (_image == null) {
+      showMsg(context, 'Upload an image');
     } else if (inputStock.text.trim().isEmpty) {
       showMsg(context, 'Enter stock');
     } else {
@@ -73,51 +124,32 @@ class _AddProductState extends State<AddProduct> {
       });
 
       try {
-        ProductModel product = ProductModel(
-          name: inputName.text.trim(),
-          category: inputCategory.text.trim(),
-          price: int.parse(inputPrice.text.trim()),
-          image: inputImageUrl.text.trim(),
-          stock: int.parse(inputStock.text.trim()),
-        );
+        String? imageUrl = await _uploadFile(inputName.text.trim());
 
-        // Check if a product with the same category already exists
-        DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-            await db.collection(dbRef).doc(product.name).get();
+        if (imageUrl != null) {
+          ProductModel product = ProductModel(
+            name: inputName.text.trim(),
+            category: inputCategory.text.trim(),
+            price: int.parse(inputPrice.text.trim()),
+            image: imageUrl,
+            stock: int.parse(inputStock.text.trim()),
+          );
 
-        if (documentSnapshot.exists) {
-          setState(() {
-            loading = false;
-          });
-          //isUpdate = true;
-          // Update the price and stock of the existing product
           await db.collection(dbRef).doc(product.name).update({
             'price': product.price,
             'stock': product.stock,
+            'image': product.image,
           });
 
           showMsg(context, 'Product Updated!', isError: false);
           await getAllProducts();
         } else {
-          // Create a new product since no product with the same category exists
-          await db
-              .collection(dbRef)
-              .doc(product.name)
-              .set(product.toFirestore())
-              .then((value) {
-            setState(() {
-              loading = false;
-            });
-            showMsg(context, 'Product Saved!', isError: false);
-            getAllProducts();
-            reset();
-          });
+          showMsg(context, 'Error uploading image');
         }
       } catch (e) {
         setState(() {
           loading = false;
         });
-
         showMsg(context, e.toString());
       }
     }
@@ -130,8 +162,8 @@ class _AddProductState extends State<AddProduct> {
       showMsg(context, 'Enter category');
     } else if (inputPrice.text.trim().isEmpty) {
       showMsg(context, 'Enter price');
-    } else if (inputImageUrl.text.trim().isEmpty) {
-      showMsg(context, 'Enter image URL');
+    } else if (_image == null) {
+      showMsg(context, 'Upload an image');
     } else if (inputStock.text.trim().isEmpty) {
       showMsg(context, 'Enter stock');
     } else {
@@ -140,25 +172,31 @@ class _AddProductState extends State<AddProduct> {
       });
 
       try {
-        ProductModel product = ProductModel(
-          name: inputName.text.trim(),
-          category: inputCategory.text.trim(),
-          price: int.parse(inputPrice.text.trim()),
-          image: inputImageUrl.text.trim(),
-          stock: int.parse(inputStock.text.trim()),
-        );
-        await db
-            .collection(dbRef)
-            .doc(product.name) // Using category as the document ID
-            .set(product.toFirestore())
-            .then((value) {
-          setState(() {
-            loading = false;
+        String? imageUrl = await _uploadFile(inputName.text.trim());
+
+        if (imageUrl != null) {
+          ProductModel product = ProductModel(
+            name: inputName.text.trim(),
+            category: inputCategory.text.trim(),
+            price: int.parse(inputPrice.text.trim()),
+            image: imageUrl,
+            stock: int.parse(inputStock.text.trim()),
+          );
+          await db
+              .collection(dbRef)
+              .doc(product.name) // Using category as the document ID
+              .set(product.toFirestore())
+              .then((value) {
+            setState(() {
+              loading = false;
+            });
+            showMsg(context, 'Product Saved!', isError: false);
+            getAllProducts();
+            reset();
           });
-          showMsg(context, 'Product Saved!', isError: false);
-          getAllProducts();
-          reset();
-        });
+        } else {
+          showMsg(context, 'Error uploading image');
+        }
       } catch (e) {
         setState(() {
           loading = false;
@@ -180,14 +218,24 @@ class _AddProductState extends State<AddProduct> {
 
   userInput(String title, String hint, TextInputType type,
       TextEditingController controller,
-      {bool readOnly = false}) {
+      {bool readOnly = false, Function()? onTap}) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: TextField(
-        readOnly: readOnly,
-        controller: controller,
-        keyboardType: type,
-        decoration: InputDecoration(hintText: hint, labelText: title),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AbsorbPointer(
+          absorbing: readOnly,
+          child: title == 'Upload Image'
+              ? ElevatedButton(
+                  onPressed: onTap,
+                  child: Text(title),
+                )
+              : TextField(
+                  controller: controller,
+                  keyboardType: type,
+                  decoration: InputDecoration(hintText: hint, labelText: title),
+                ),
+        ),
       ),
     );
   }
@@ -202,7 +250,11 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Firestore App'),
+        title: const Text(
+          'SmartStock Pro',
+          textScaleFactor: 1.5,
+        ),
+        backgroundColor: Colors.amber.shade800,
       ),
       body: Column(
         children: [
@@ -217,9 +269,16 @@ class _AddProductState extends State<AddProduct> {
                   },
                   child: Card(
                     child: ListTile(
-                      leading: Text(product.category.toString()),
-                      title: Text(product.price.toString()),
-                      subtitle: Text(product.image.toString()),
+                      leading: product.image != null
+                          ? Image.network(product.image!, height: 50, width: 50)
+                          : Icon(Icons.image),
+                      title: Text(product.name.toString()),
+                      subtitle: Row(
+                        children: [
+                          Text(
+                              'Category :${product.category.toString()} Stock :${product.stock.toString()}'),
+                        ],
+                      ),
                       trailing: IconButton(
                         onPressed: () {
                           onDelete(product);
@@ -235,12 +294,14 @@ class _AddProductState extends State<AddProduct> {
           userInput('Name', 'Enter name', TextInputType.text, inputName,
               readOnly: isUpdate),
           userInput(
-              'category', 'Enter category.', TextInputType.text, inputCategory,
+              'Category', 'Enter category.', TextInputType.text, inputCategory,
               readOnly: isUpdate),
-          userInput('price', 'Enter price', TextInputType.number, inputPrice),
-          userInput('image URL', 'Enter image URL', TextInputType.text,
-              inputImageUrl),
-          userInput('stock', 'Enter stock', TextInputType.number, inputStock),
+          userInput('Price', 'Enter price', TextInputType.number, inputPrice),
+          userInput('Stock', 'Enter category.', TextInputType.text, inputStock,
+              readOnly: isUpdate),
+          userInput('Upload Image', 'Upload Image', TextInputType.text,
+              inputStock, // It's a dummy text field for the button
+              onTap: _uploadImage),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -75,19 +75,34 @@ class _AddProductState extends State<AddProduct> {
           image: inputImageUrl.text.trim(),
           stock: int.parse(inputStock.text.trim()),
         );
-        await db
-            .collection(dbRef)
-            .doc(product.docID) // Using category as the document ID
-            .set(product.toFirestore())
-            .then((value) {
-          setState(() {
-            loading = false;
+
+        // Check if a product with the same category already exists
+        DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+            await db.collection(dbRef).doc(product.category).get();
+
+        if (documentSnapshot.exists) {
+          // Update the price and stock of the existing product
+          await db.collection(dbRef).doc(product.category).update({
+            'price': product.price,
+            'stock': product.stock,
           });
+
           showMsg(context, 'Product Updated!', isError: false);
-          getAllProducts();
-          isUpdate = false;
-          reset();
-        });
+        } else {
+          // Create a new product since no product with the same category exists
+          await db
+              .collection(dbRef)
+              .doc(product.category)
+              .set(product.toFirestore())
+              .then((value) {
+            setState(() {
+              loading = false;
+            });
+            showMsg(context, 'Product Saved!', isError: false);
+            getAllProducts();
+            reset();
+          });
+        }
       } catch (e) {
         setState(() {
           loading = false;

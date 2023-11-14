@@ -5,8 +5,7 @@ class ProductModel {
   final String? category;
   final String? image;
   final String? name;
-  final bool? isPopular;
-  final bool? isRecommended;
+
   final int? price;
   final int? stock;
 
@@ -15,8 +14,6 @@ class ProductModel {
       this.category,
       this.image,
       this.name,
-      this.isPopular,
-      this.isRecommended,
       this.price,
       this.stock});
 

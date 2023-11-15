@@ -22,7 +22,6 @@ class ProductModel {
   ) {
     final data = snapshot.data();
     return ProductModel(
-        docID: snapshot.id,
         category: data?['category'],
         image: data?['image'],
         name: data?['name'],

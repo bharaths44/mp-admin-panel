@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -53,39 +54,35 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<void> _uploadImage() async {
-    // Pick an image from the gallery
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      // Convert the pickedFile to a File
       _image = File(pickedFile.path);
-
-      // Upload the image to Firebase Storage
       final storageRef = FirebaseStorage.instance
           .ref()
-          .child('product_images/${DateTime.now().toString()}');
+          .child('product_images/${inputName.text.toString()}');
       final uploadTask = storageRef.putFile(_image!);
 
-      // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-        // Get the download URL of the uploaded image
         final downloadURL = await storageRef.getDownloadURL();
-
-        // Update the inputImageUrl controller with the download URL
         setState(() {
           inputImageUrl.text = downloadURL;
           loading = false;
         });
       });
+    } else {
+      print('No image selected.');
+      // No need to return here, as it's optional to have an image
     }
   }
 
   Future<String?> _uploadFile(String name) async {
     try {
       if (_image != null) {
-        TaskSnapshot snapshot =
-            await storage.ref('images/$name').putFile(_image!);
+        TaskSnapshot snapshot = await storage
+            .ref('product_images/${inputName.text.toString()}')
+            .putFile(_image!);
         return await snapshot.ref.getDownloadURL();
       }
       return null;
@@ -114,8 +111,6 @@ class _AddProductState extends State<AddProduct> {
       showMsg(context, 'Enter category');
     } else if (inputPrice.text.trim().isEmpty) {
       showMsg(context, 'Enter price');
-    } else if (_image == null) {
-      showMsg(context, 'Upload an image');
     } else if (inputStock.text.trim().isEmpty) {
       showMsg(context, 'Enter stock');
     } else {
@@ -124,7 +119,20 @@ class _AddProductState extends State<AddProduct> {
       });
 
       try {
-        String? imageUrl = await _uploadFile(inputName.text.trim());
+        // Fetch the existing image URL from Firebase
+        DocumentSnapshot docSnapshot =
+            await db.collection(dbRef).doc(inputName.text.trim()).get();
+        String? existingImageUrl =
+            (docSnapshot.data() as Map<String, dynamic>?)?['image'];
+
+        // Check if an image is selected
+        String? imageUrl;
+        if (_image != null) {
+          imageUrl = await _uploadFile(inputName.text.trim());
+        } else {
+          // Use the existing image URL if _image is null
+          imageUrl = existingImageUrl;
+        }
 
         if (imageUrl != null) {
           ProductModel product = ProductModel(
@@ -139,6 +147,9 @@ class _AddProductState extends State<AddProduct> {
             'price': product.price,
             'stock': product.stock,
             'image': product.image,
+          });
+          setState(() {
+            loading = false;
           });
 
           showMsg(context, 'Product Updated!', isError: false);
@@ -271,12 +282,12 @@ class _AddProductState extends State<AddProduct> {
                     child: ListTile(
                       leading: product.image != null
                           ? Image.network(product.image!, height: 50, width: 50)
-                          : Icon(Icons.image),
+                          : const Icon(Icons.image),
                       title: Text(product.name.toString()),
                       subtitle: Row(
                         children: [
                           Text(
-                              'Category :${product.category.toString()} Stock :${product.stock.toString()}'),
+                              'Category :${product.category.toString()}\nStock :${product.stock.toString()}\nPrice :${product.price.toString()}'),
                         ],
                       ),
                       trailing: IconButton(
@@ -291,14 +302,25 @@ class _AddProductState extends State<AddProduct> {
               },
             ),
           ),
-          userInput('Name', 'Enter name', TextInputType.text, inputName,
-              readOnly: isUpdate),
           userInput(
-              'Category', 'Enter category.', TextInputType.text, inputCategory,
-              readOnly: isUpdate),
+            'Name',
+            'Enter name',
+            TextInputType.text,
+            inputName,
+          ),
+          userInput(
+            'Category',
+            'Enter category',
+            TextInputType.text,
+            inputCategory,
+          ),
           userInput('Price', 'Enter price', TextInputType.number, inputPrice),
-          userInput('Stock', 'Enter category.', TextInputType.text, inputStock,
-              readOnly: isUpdate),
+          userInput(
+            'Stock',
+            'Enter category',
+            TextInputType.text,
+            inputStock,
+          ),
           userInput('Upload Image', 'Upload Image', TextInputType.text,
               inputStock, // It's a dummy text field for the button
               onTap: _uploadImage),

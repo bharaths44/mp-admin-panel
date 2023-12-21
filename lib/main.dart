@@ -1,7 +1,7 @@
+import 'package:adminpanel/src/view/screens/add_product/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:adminpanel/firebase_options.dart';
-import 'package:adminpanel/add_product.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const AddProduct(),
+      home: AddProductScreen(),
     );
   }
 }

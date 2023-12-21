@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -54,7 +57,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAu9bs0ywW0a9mRNDuNYWaKZDS_jhuR6_E',
-    appId: '1:873376294563:android:60990faab244e695954116',
+    appId: '1:873376294563:android:3c8197419ed1ffe1954116',
     messagingSenderId: '873376294563',
     projectId: 'crud-test-4747',
     storageBucket: 'crud-test-4747.appspot.com',
@@ -62,19 +65,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyClhuJK4qrvSscV3a4msYvxG3xVE8gV9c0',
-    appId: '1:873376294563:ios:362f86a1ddc7bcfa954116',
+    appId: '1:873376294563:ios:0b77ccc854740357954116',
     messagingSenderId: '873376294563',
     projectId: 'crud-test-4747',
     storageBucket: 'crud-test-4747.appspot.com',
-    iosBundleId: 'com.tester.test3',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyClhuJK4qrvSscV3a4msYvxG3xVE8gV9c0',
-    appId: '1:873376294563:ios:362f86a1ddc7bcfa954116',
-    messagingSenderId: '873376294563',
-    projectId: 'crud-test-4747',
-    storageBucket: 'crud-test-4747.appspot.com',
-    iosBundleId: 'com.tester.test3',
+    iosClientId: '873376294563-c34eq8qh1apnc6984004eibr7rn07qif.apps.googleusercontent.com',
+    iosBundleId: 'com.sinasys.eCommerceFlutter',
   );
 }

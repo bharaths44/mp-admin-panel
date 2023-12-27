@@ -1,7 +1,7 @@
-import 'package:adminpanel/src/view/screens/add_product/add_product.dart';
+import 'package:ssp_admin_panel/src/view/screens/add_product/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:adminpanel/firebase_options.dart';
+import 'package:ssp_admin_panel/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,4 +1,4 @@
-import 'package:adminpanel/src/controller/add_product_controller.dart';
+import 'package:ssp_admin_panel/src/controller/add_product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

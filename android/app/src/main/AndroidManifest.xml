@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tester.test3">
-   <application
-        android:label="test3"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="admin"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

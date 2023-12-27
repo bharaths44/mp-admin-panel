@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>873376294563-c34eq8qh1apnc6984004eibr7rn07qif.apps.googleusercontent.com</string>
+	<string>873376294563-2t6ocflc2s1p1n9lj078lhvm3a0f10dg.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.873376294563-c34eq8qh1apnc6984004eibr7rn07qif</string>
+	<string>com.googleusercontent.apps.873376294563-2t6ocflc2s1p1n9lj078lhvm3a0f10dg</string>
 	<key>API_KEY</key>
 	<string>AIzaSyClhuJK4qrvSscV3a4msYvxG3xVE8gV9c0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.sinasys.eCommerceFlutter</string>
+	<string>com.example.admin</string>
 	<key>PROJECT_ID</key>
 	<string>crud-test-4747</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:873376294563:ios:0b77ccc854740357954116</string>
+	<string>1:873376294563:ios:ed2793c4782f990c954116</string>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../src/controller/add_product_controller.dart';
+import '../src/view/screens/add_product/add_product_controller.dart';
 
 class AddProductControllerBinding extends Bindings {
   @override

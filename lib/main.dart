@@ -1,7 +1,11 @@
+import 'package:get/get.dart';
 import 'package:ssp_admin_panel/src/view/screens/add_product/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ssp_admin_panel/firebase_options.dart';
+import 'package:ssp_admin_panel/src/view/screens/all_product_screen/product_detail_screen.dart';
+
+import 'src/view/screens/all_product_screen/all_products.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,13 +21,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: AddProductScreen(),
+      routes: {
+        '/productDetailScreen': (context) => ProductDetailScreen(),
+      },
+      home: AllProductScreen(),
     );
   }
 }

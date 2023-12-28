@@ -35,7 +35,7 @@ class AddProductController extends GetxController {
         update();
       });
     } else {
-      print('No image selected.');
+      print('No image selected');
       // No need to return here, as it's optional to have an image
     }
   }

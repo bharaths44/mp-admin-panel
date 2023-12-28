@@ -33,21 +33,40 @@ class AllProductScreen extends StatelessWidget {
                       arguments: allProductsController.products[index]);
                   print('Product tapped: ${product.name}');
                 },
-                child: GridTile(
-                  footer: GridTileBar(
-                    backgroundColor: Colors.black54,
-                    title: Text(
-                        "Name: ${product.name}\nStock: ${product.stock}\nPrice: ${product.price}"),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Image.network(
-                    product.image,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
+                  child: GridTile(
+                    footer: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                        color: Colors.black54,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Name: ${product.name}\nStock: ${product.stock}\nPrice: ${product.price}",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.network(
+                        product.image,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               );

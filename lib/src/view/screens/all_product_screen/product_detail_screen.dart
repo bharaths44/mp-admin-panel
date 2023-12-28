@@ -79,17 +79,16 @@ class ProductDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 3),
                                 const Spacer(),
                                 Text(
-                                  product.isAvailable
-                                      ? "Available in stock"
-                                      : "Not available",
+                                  "Stock: ${product.stock}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 20),
                                 )
                               ],
                             ),
                             const SizedBox(height: 30),
                             Text(
-                              "About",
+                              "Description ",
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             const SizedBox(height: 10),

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/productDetailScreen': (context) => ProductDetailScreen(),
       },
-      home: AllProductScreen(),
+      home: AddProductScreen(),
     );
   }
 }

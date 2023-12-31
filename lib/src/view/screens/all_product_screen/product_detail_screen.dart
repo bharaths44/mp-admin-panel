@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:ssp_admin_panel/src/view/screens/all_product_screen/all_product_controller.dart';
+import 'package:ssp_admin_panel/widgets/alertbox.dart';
 
 import '../../../model/product.dart';
 
@@ -123,9 +124,13 @@ class ProductDetailScreen extends StatelessWidget {
                       foregroundColor: const Color.fromRGBO(13, 41, 71, 1),
                       padding: const EdgeInsets.all(20),
                     ),
-                    onPressed: product.isAvailable
-                        ? () => print("Delete product")
-                        : null,
+                    onPressed: () {
+                      AlertBox(
+                        message:
+                            "Are you sure you want to delete this product?",
+                        onConfirm: () => controller.deleteProduct(product),
+                      ).show();
+                    },
                     child: const Text("Delete product"),
                   ),
                 ),

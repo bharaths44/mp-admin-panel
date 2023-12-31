@@ -37,11 +37,25 @@ class AddProductScreen extends StatelessWidget {
               controller: controller.type,
               decoration: const InputDecoration(labelText: 'Product Type'),
             ),
-            if (controller.image != null) Image.file(controller.image!),
-            ElevatedButton(
-              onPressed: controller.uploadImage,
-              child: const Text('Upload Image'),
-            ),
+            Obx(() {
+              return controller.image.value != null
+                  ? Image.file(
+                      controller.image.value!,
+                      width: 250,
+                      height: 250,
+                      fit: BoxFit.contain,
+                    )
+                  : Container();
+            }),
+            Obx(() {
+              return ElevatedButton(
+                onPressed:
+                    controller.loading.value ? null : controller.uploadImage,
+                child: controller.loading.value
+                    ? const CircularProgressIndicator()
+                    : const Text('Upload Image'),
+              );
+            }),
             ElevatedButton(
               onPressed: () {
                 controller.addProduct();

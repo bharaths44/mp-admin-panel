@@ -14,7 +14,7 @@ class AddProductController extends GetxController {
   FirebaseStorage storage = FirebaseStorage.instance;
   var inputImageUrl = ''.obs;
   var loading = false.obs;
-  File? image;
+  var image = Rx<File?>(null);
 
   Future<void> uploadImage() async {
     final picker = ImagePicker();
@@ -22,11 +22,11 @@ class AddProductController extends GetxController {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      image = File(pickedFile.path);
+      image.value = File(pickedFile.path);
       final storageRef = FirebaseStorage.instance
           .ref()
           .child('product_images/${name.text.toString()}');
-      final uploadTask = storageRef.putFile(image!);
+      final uploadTask = storageRef.putFile(image.value!);
 
       await uploadTask.whenComplete(() async {
         final downloadURL = await storageRef.getDownloadURL();
@@ -56,6 +56,11 @@ class AddProductController extends GetxController {
         .doc(name.text.toString())
         .set(product);
     loading.value = false;
-    Get.back();
+    Get.snackbar(
+      duration: const Duration(seconds: 2),
+      'Success:',
+      'Product added successfully',
+      backgroundColor: Colors.green,
+    );
   }
 }

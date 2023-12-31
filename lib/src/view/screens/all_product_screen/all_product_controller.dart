@@ -25,4 +25,17 @@ class AllProductsController extends GetxController {
     update();
     return products;
   }
+  Future<void> deleteProduct(Product product) async {
+    try {
+      await db.collection('product').doc(product.name).delete();
+      products.remove(product);
+      update();
+    } catch (e) {
+      Get.snackbar(
+        'Error:',
+        e.toString(),
+        backgroundColor: Colors.red,
+      );
+    }
+  }
 }

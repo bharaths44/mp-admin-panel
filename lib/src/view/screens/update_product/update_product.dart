@@ -60,6 +60,7 @@ class UpdateProductScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 controller.updateProduct();
+                Get.offAllNamed('/allProductScreen');
               },
               child: const Text('Update Product'),
             ),

@@ -1,16 +1,17 @@
 import 'package:get/get.dart';
 
-import '../src/view/screens/add_product/add_product_controller.dart';
+import '../src/view/screens/all_product_screen/all_product_controller.dart';
 
-class AddProductControllerBinding extends Bindings {
+class AllProductsControllerBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AddProductController>(() => AddProductController());
+    Get.lazyPut<AllProductsController>(() => AllProductsController(),
+        fenix: true);
   }
 }
 
 class DependencyCreator {
   static init() {
-    AddProductControllerBinding().dependencies();
+    AllProductsControllerBinding().dependencies();
   }
 }

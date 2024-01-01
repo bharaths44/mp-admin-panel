@@ -4,8 +4,9 @@ import 'package:ssp_admin_panel/src/view/screens/all_product_screen/all_product_
 import 'package:ssp_admin_panel/widgets/alertbox.dart';
 
 import '../../../model/product.dart';
+import '../update_product/update_product.dart';
 
-final AllProductsController controller = Get.put(AllProductsController());
+final AllProductsController controller = Get.find<AllProductsController>();
 
 class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({Key? key}) : super(key: key);
@@ -112,7 +113,10 @@ class ProductDetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                     ),
                     onPressed: product.isAvailable
-                        ? () => print("Update product")
+                        ? () {
+                            Get.to(() => UpdateProductScreen(),
+                                arguments: product);
+                          }
                         : null,
                     child: const Text("Update product"),
                   ),

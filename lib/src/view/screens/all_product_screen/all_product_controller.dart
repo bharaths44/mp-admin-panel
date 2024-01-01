@@ -8,6 +8,17 @@ class AllProductsController extends GetxController {
   RxList<Product> products = <Product>[].obs;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getProducts();
+  }
+
+  clearproducts() {
+    products.clear();
+    update();
+  }
+
   Future<RxList<Product>> getProducts() async {
     try {
       await db.collection('product').get().then((snapshot) {
@@ -25,6 +36,7 @@ class AllProductsController extends GetxController {
     update();
     return products;
   }
+
   Future<void> deleteProduct(Product product) async {
     try {
       await db.collection('product').doc(product.name).delete();

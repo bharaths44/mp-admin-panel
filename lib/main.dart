@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ssp_admin_panel/core/dependency.dart';
 import 'package:ssp_admin_panel/src/view/screens/add_product/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,6 +10,7 @@ import 'src/view/screens/all_product_screen/all_products.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DependencyCreator.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,8 +31,9 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/productDetailScreen': (context) => ProductDetailScreen(),
+        '/allProductScreen': (context) => AllProductScreen(),
       },
-      home: AddProductScreen(),
+      home: AllProductScreen(),
     );
   }
 }

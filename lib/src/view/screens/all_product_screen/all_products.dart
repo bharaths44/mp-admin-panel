@@ -13,6 +13,7 @@ class AllProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('All Products'),
       ),
       body: Obx(() {
@@ -68,6 +69,13 @@ class AllProductScreen extends StatelessWidget {
           },
         );
       }),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add Product',
+        onPressed: () {
+          Get.toNamed('/addProductScreen');
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

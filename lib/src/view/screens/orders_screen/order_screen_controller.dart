@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderScreenController extends GetxController {
@@ -51,14 +52,19 @@ class OrderScreenController extends GetxController {
         }).toList();
 
         fetchedProducts.addAll(products);
-      } catch (e) {}
+      } catch (e) {
+        Get.snackbar(
+          'Error:',
+          e.toString(),
+          backgroundColor: Colors.red,
+        );
+      }
     }
 
     productDetails.assignAll(fetchedProducts);
   }
 
   Future<void> fetchUserData(String userId) async {
-    print('Fetching user data for user ID: $userId');
     try {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
@@ -69,9 +75,12 @@ class OrderScreenController extends GetxController {
         'username': fullData['name'],
         'address': fullData['address'],
       };
-      print('Fetched user data: ${userData.value}');
     } catch (e) {
-      print('Error fetching user data: $e');
+      Get.snackbar(
+        'Error:',
+        e.toString(),
+        backgroundColor: Colors.red,
+      );
     }
   }
 }

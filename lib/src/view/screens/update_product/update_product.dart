@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssp_admin_panel/src/view/screens/admin_home_page/dashboard.dart';
 import 'package:ssp_admin_panel/src/view/screens/update_product/update_product_controller.dart';
 
 import '../../../../core/appdata.dart';
@@ -72,7 +73,7 @@ class UpdateProductScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 controller.updateProduct();
-                Get.offAllNamed('/allProductScreen');
+                Get.off(DashBoardScreen());
               },
               child: const Text('Update Product'),
             ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssp_admin_panel/src/view/screens/update_product/update_product_controller.dart';
 
+import '../../../../core/appdata.dart';
+
 class UpdateProductScreen extends StatelessWidget {
   final UpdateProductController controller =
       Get.put(UpdateProductController(Get.arguments));
@@ -34,9 +36,19 @@ class UpdateProductScreen extends StatelessWidget {
               controller: controller.stock,
               decoration: const InputDecoration(labelText: 'Product Stock'),
             ),
-            TextFormField(
-              controller: controller.type,
+            DropdownButtonFormField(
+              value:
+                  controller.type.text.isNotEmpty ? controller.type.text : null,
               decoration: const InputDecoration(labelText: 'Product Type'),
+              items: AppData.categories.map((String category) {
+                return DropdownMenuItem(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                controller.type.value = newValue.toString() as TextEditingValue;
+              },
             ),
             Obx(() {
               return controller.inputImageUrl.value != ''

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ssp_admin_panel/firebase_options.dart';
 import 'package:ssp_admin_panel/src/view/screens/all_product_screen/product_detail_screen.dart';
+import 'package:ssp_admin_panel/src/view/screens/orders_screen/order_screen.dart';
 
 import 'src/view/screens/all_product_screen/all_products.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/productDetailScreen': (context) => ProductDetailScreen(),
         '/allProductScreen': (context) => AllProductScreen(),
       },
-      home: AllProductScreen(),
+      home: OrderScreen(),
     );
   }
 }

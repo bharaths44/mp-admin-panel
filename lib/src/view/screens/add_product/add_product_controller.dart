@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +36,9 @@ class AddProductController extends GetxController {
         update();
       });
     } else {
-      print('No image selected');
+      if (kDebugMode) {
+        print('No image selected');
+      }
       // No need to return here, as it's optional to have an image
     }
   }

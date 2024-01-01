@@ -2,6 +2,8 @@ import 'package:ssp_admin_panel/src/view/screens/add_product/add_product_control
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/appdata.dart';
+
 class AddProductScreen extends StatelessWidget {
   final AddProductController controller = Get.put(AddProductController());
 
@@ -33,9 +35,18 @@ class AddProductScreen extends StatelessWidget {
               controller: controller.stock,
               decoration: const InputDecoration(labelText: 'Product Stock'),
             ),
-            TextField(
-              controller: controller.type,
+            DropdownButtonFormField(
+              value: controller.type.value,
               decoration: const InputDecoration(labelText: 'Product Type'),
+              items: AppData.categories.map((String category) {
+                return DropdownMenuItem(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                controller.type.value = newValue.toString() as TextEditingValue;
+              },
             ),
             Obx(() {
               return controller.image.value != null

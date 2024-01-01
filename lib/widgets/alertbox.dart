@@ -5,7 +5,8 @@ class AlertBox extends StatelessWidget {
   final String message;
   final Function onConfirm;
 
-  AlertBox({required this.message, required this.onConfirm});
+
+  const AlertBox({super.key, required this.message, required this.onConfirm});
 
   Future<void> show() async {
     return Get.defaultDialog(
@@ -18,7 +19,6 @@ class AlertBox extends StatelessWidget {
         Get.back();
         onConfirm();
       },
-      //onCancel: () => Get.back(),
     );
   }
 

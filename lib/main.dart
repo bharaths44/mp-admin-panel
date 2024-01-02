@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         '/home/': (context) => DashBoardScreen(),
       },
       initialBinding: DashBoardControllerBinding(),
-      home: DashBoardScreen(),
+      home: LoginScreen(),
     );
   }
 }

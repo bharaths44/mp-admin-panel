@@ -47,6 +47,17 @@ class AddProductController extends GetxController {
     }
   }
 
+  cleartextfields() {
+    about.clear();
+    stock.clear();
+    name.clear();
+    price.clear();
+    type.clear();
+    inputImageUrl.value = '';
+    image.value = null;
+    update();
+  }
+
   Future<void> addProduct() async {
     loading.value = true;
     final product = {
@@ -60,6 +71,7 @@ class AddProductController extends GetxController {
     };
     await FirebaseFirestore.instance.collection('product').doc().set(product);
     loading.value = false;
+    cleartextfields();
     Get.snackbar(
       duration: const Duration(seconds: 2),
       'Success:',

@@ -38,8 +38,7 @@ class AddProductScreen extends StatelessWidget {
               decoration: const InputDecoration(labelText: 'Product Stock'),
             ),
             DropdownButtonFormField(
-              value:
-                  controller.type.text.isEmpty ? null : controller.type.value,
+              value: controller.type.text.isEmpty ? null : controller.type.text,
               decoration: const InputDecoration(labelText: 'Product Type'),
               items: AppData.categories.map((String category) {
                 return DropdownMenuItem(

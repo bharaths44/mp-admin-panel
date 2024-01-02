@@ -1,6 +1,7 @@
 import 'package:ssp_admin_panel/src/view/screens/add_product/add_product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssp_admin_panel/widgets/customappbar.dart';
 
 import '../../../../core/appdata.dart';
 
@@ -12,8 +13,8 @@ class AddProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Product'),
+      appBar: const CustomAppBar(
+        title:'Add Product',
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssp_admin_panel/src/view/screens/all_product_screen/all_product_controller.dart';
+import 'package:ssp_admin_panel/widgets/customappbar.dart';
 import '../../../model/product.dart';
 
 class AllProductScreen extends StatelessWidget {
@@ -12,9 +13,8 @@ class AllProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('All Products'),
+      appBar: const CustomAppBar(
+       title: 'All Products',
       ),
       body: Obx(() {
         return GridView.builder(

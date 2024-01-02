@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../widgets/customappbar.dart';
 import 'order_screen_controller.dart';
 import 'order_detail_screen.dart';
 
@@ -12,8 +13,8 @@ class OrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Orders'),
+      appBar: const CustomAppBar(
+       title: 'Orders',
       ),
       body: Obx(() {
         if (controller.orders.isEmpty) {

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssp_admin_panel/src/view/screens/admin_home_page/dashboard.dart';
 import 'package:ssp_admin_panel/src/view/screens/orders_screen/order_screen_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:ssp_admin_panel/widgets/text.dart';
 
-import 'order_screen.dart';
+
 
 class OrderDetailScreen extends StatelessWidget {
   final OrderScreenController orderController =
@@ -22,7 +23,7 @@ class OrderDetailScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.off(() => OrderScreen());
+            Get.off(() => DashBoardScreen());
           },
         ),
         title:

@@ -23,7 +23,8 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Verify Email"),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.userChanges(),
@@ -42,16 +43,29 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               });
             }
           }
-          return Column(children: [
-            const Text("Please verify your email"),
-            TextButton(
-              onPressed: () async {
-                final user = FirebaseAuth.instance.currentUser;
-                await user?.sendEmailVerification();
-              },
-              child: const Text("Send email verification"),
-            )
-          ]);
+          return Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Please verify your email',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final user = FirebaseAuth.instance.currentUser;
+                      await user?.sendEmailVerification();
+                    },
+                    child: const Text(
+                      'Send email verification',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ]),
+          );
         },
       ),
     );

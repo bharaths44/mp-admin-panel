@@ -5,6 +5,7 @@ import 'package:ssp_admin_panel/src/view/screens/admin_home_page/home_page.dart'
 import 'package:ssp_admin_panel/src/view/screens/admin_home_page/home_page_controller.dart';
 import 'package:ssp_admin_panel/src/view/screens/all_product_screen/all_products.dart';
 
+
 import '../orders_screen/order_screen.dart';
 import '../profile_screen/profile_screen.dart';
 
@@ -17,7 +18,7 @@ class DashBoardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AdminPageController>(builder: (controller) {
       return Scaffold(
-        backgroundColor: const Color.fromRGBO(13, 41, 71, 1),
+        backgroundColor: Colors.deepPurple,
         body: SafeArea(
           child: IndexedStack(
             index: controller.tabIndex.value,
@@ -30,7 +31,7 @@ class DashBoardScreen extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          fixedColor: const Color.fromRGBO(13, 41, 71, 1),
+          fixedColor: Colors.deepPurple,
           unselectedItemColor: Colors.grey,
           currentIndex: controller.tabIndex.value,
           items: const [

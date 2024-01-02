@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssp_admin_panel/widgets/customappbar.dart';
 
 import '../../../../widgets/gridcard.dart';
 import '../../../auth/login/login_controller.dart';
@@ -17,15 +18,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromRGBO(13, 41, 71, 1),
-        title: const Text("Profile Screen",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 35,
-              fontWeight: FontWeight.w300,
-            )),
+      appBar: const CustomAppBar(
+        title: "Profile Scren",
       ),
       body: FutureBuilder<String>(
         future: getUserName(user),

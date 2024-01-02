@@ -4,6 +4,7 @@ import 'package:ssp_admin_panel/src/view/screens/admin_home_page/dashboard.dart'
 import 'package:ssp_admin_panel/src/view/screens/update_product/update_product_controller.dart';
 
 import '../../../../core/appdata.dart';
+import '../../../../widgets/customappbar.dart';
 
 class UpdateProductScreen extends StatelessWidget {
   final UpdateProductController controller =
@@ -14,8 +15,8 @@ class UpdateProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Update Product'),
+      appBar: const CustomAppBar(
+        title: 'All Products',
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

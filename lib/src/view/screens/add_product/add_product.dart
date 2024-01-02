@@ -14,7 +14,8 @@ class AddProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title:'Add Product',
+        title: 'Add Product',
+        leading: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -47,7 +48,8 @@ class AddProductScreen extends StatelessWidget {
                 );
               }).toList(),
               onChanged: (newValue) {
-                controller.type.value = newValue.toString() as TextEditingValue;
+                controller.type.value =
+                    TextEditingValue(text: newValue.toString());
               },
             ),
             Obx(() {

@@ -17,19 +17,21 @@ class UpdateProductController extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController type = TextEditingController();
+  String docId;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   var inputImageUrl = ''.obs;
   var loading = false.obs;
   var image = Rx<File?>(null);
 
-  UpdateProductController(Product product) {
+  UpdateProductController(Product product) : docId = product.docId {
     about = TextEditingController(text: product.about);
     stock = TextEditingController(text: product.stock.toString());
     name = TextEditingController(text: product.name);
     price = TextEditingController(text: product.price.toString());
-    type = TextEditingController(text: product.type);
+    type.value = TextEditingValue(text: product.type);
     inputImageUrl.value = product.image;
+    docId = product.docId;
   }
   Future<void> uploadImage() async {
     final picker = ImagePicker();
@@ -70,7 +72,7 @@ class UpdateProductController extends GetxController {
     };
     await FirebaseFirestore.instance
         .collection('product')
-        .doc(name.text.toString())
+        .doc(docId)
         .set(product);
     loading.value = false;
     Get.snackbar(
@@ -82,6 +84,5 @@ class UpdateProductController extends GetxController {
     allProductsController.clearproducts();
     allProductsController.getProducts();
     allProductsController.update();
-   
   }
 }

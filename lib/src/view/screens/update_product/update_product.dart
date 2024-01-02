@@ -16,7 +16,8 @@ class UpdateProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: 'All Products',
+        title: 'Update Products',
+        leading: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -49,7 +50,8 @@ class UpdateProductScreen extends StatelessWidget {
                 );
               }).toList(),
               onChanged: (newValue) {
-                controller.type.value = newValue.toString() as TextEditingValue;
+                controller.type.value =
+                    TextEditingValue(text: newValue.toString());
               },
             ),
             Obx(() {

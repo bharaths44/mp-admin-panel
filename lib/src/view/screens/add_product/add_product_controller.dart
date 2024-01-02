@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../all_product_screen/all_product_controller.dart';
+
 class AddProductController extends GetxController {
+  final AllProductsController allProductsController =
+      Get.find<AllProductsController>();
   TextEditingController about = TextEditingController();
   TextEditingController stock = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -54,10 +58,7 @@ class AddProductController extends GetxController {
       'image': inputImageUrl.value,
       'isAvailable': true,
     };
-    await FirebaseFirestore.instance
-        .collection('product')
-        .doc(name.text.toString())
-        .set(product);
+    await FirebaseFirestore.instance.collection('product').doc().set(product);
     loading.value = false;
     Get.snackbar(
       duration: const Duration(seconds: 2),
@@ -65,5 +66,8 @@ class AddProductController extends GetxController {
       'Product added successfully',
       backgroundColor: Colors.green,
     );
+    allProductsController.clearproducts();
+    allProductsController.getProducts();
+    allProductsController.update();
   }
 }

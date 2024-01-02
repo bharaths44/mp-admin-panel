@@ -39,8 +39,9 @@ class AllProductsController extends GetxController {
 
   Future<void> deleteProduct(Product product) async {
     try {
-      await db.collection('product').doc(product.name).delete();
+      await db.collection('product').doc(product.docId).delete();
       products.remove(product);
+      Get.toNamed('/home/');
       update();
     } catch (e) {
       Get.snackbar(

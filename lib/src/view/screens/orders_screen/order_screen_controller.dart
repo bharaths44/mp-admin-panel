@@ -21,8 +21,12 @@ class OrderScreenController extends GetxController {
       for (var doc in docs) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['orderId'] = doc.id;
-        await fetchUserData(data['userId']);
+        Map<String, dynamic> userData = await fetchUserData(data['userId']);
+        data['name'] = userData['name'];
+        data['address'] = userData['address'];
         orders.add(data);
+
+        update();
       }
     } catch (e) {
       if (kDebugMode) {
@@ -64,15 +68,16 @@ class OrderScreenController extends GetxController {
     productDetails.assignAll(fetchedProducts);
   }
 
-  Future<void> fetchUserData(String userId) async {
+  Future<Map<String, dynamic>> fetchUserData(String userId) async {
     try {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
       Map<String, dynamic> fullData = userDoc.data() as Map<String, dynamic>;
-      userData.value = {
-        'username': fullData['name'],
+
+      return {
+        'name': fullData['name'],
         'address': fullData['address'],
       };
     } catch (e) {
@@ -81,6 +86,7 @@ class OrderScreenController extends GetxController {
         e.toString(),
         backgroundColor: Colors.red,
       );
+      return {};
     }
   }
 }

@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:ssp_admin_panel/src/view/screens/admin_home_page/home_page_controller.dart';
 
 class LoginController extends GetxController {
-
   final AdminPageController dashboardController =
       Get.find<AdminPageController>();
   final email = TextEditingController();
@@ -19,29 +18,33 @@ class LoginController extends GetxController {
 
   void login() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email.text, password: password.text);
-      clearControllers();
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null && !user.emailVerified) {
-        // If the email is not verified, navigate to the verify email page
-        Get.toNamed('/verifyemail/');
-      } else if (user != null && user.emailVerified) {
-        // If the email is verified, navigate to the home page
-        executeOnInitLogic();
-        Get.offAllNamed(
-          '/home/',
-        );
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text.trim(),
+        password: password.text.trim(),
+      );
+
+      // Get the user's document from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+
+      // Check if the user is an admin
+      if ((userDoc.data() as Map<String, dynamic>)['isAdmin'] == true) {
+        // User is an admin, proceed with login
+        Get.offAllNamed('/home/');
       } else {
+        // User is not an admin, show error message
         Get.snackbar(
-          'Error:',
-          'Login failed. Please try again.',
+          'Error',
+          'You are not an admin.',
           backgroundColor: Colors.red,
         );
       }
     } catch (e) {
       Get.snackbar(
-        'Error :',
+        'Error',
         e.toString(),
         backgroundColor: Colors.red,
       );

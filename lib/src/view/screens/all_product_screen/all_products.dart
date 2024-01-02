@@ -14,7 +14,7 @@ class AllProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-       title: 'All Products',
+        title: 'All Products',
       ),
       body: Obx(() {
         return GridView.builder(
